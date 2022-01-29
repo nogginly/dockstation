@@ -1,0 +1,4 @@
+.vagrant
+tmp*
+local-setup.sh
+**/config/dev

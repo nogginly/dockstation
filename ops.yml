@@ -1,0 +1,26 @@
+dependencies:
+  cask:
+    - virtualbox
+    - vagrant
+  brew:
+    - docker-compose
+    - docker
+  custom:
+    - ops start
+actions:
+  start:
+    command: vagrant up
+    description: Brings up the VM using Vagrant
+  stop:
+    command: vagrant suspend
+    description: Stop the VM without destroying it
+  ssh:
+    command: vagrant ssh
+    description: SSH into the VM managed by Vagrant
+  destroy:
+    command: vagrant destroy
+    description: Destroy the VM
+  reprovision:
+    command: vagrant provision
+    description: Reprovisions the Vagrant VM, may result in errors due to prior provisioning.
+    alias: reup
