@@ -75,7 +75,7 @@ brew install docker-compose
 
 ```sh
 vagrant up
-source local-setup.sh
+source tmp/local-setup.sh
 ```
 
 The local config sets up `DOCKER_HOST` to point to the pre-configured IP and PORT for the VM and docker daemon running in it, respectively.
