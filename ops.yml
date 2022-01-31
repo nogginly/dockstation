@@ -20,7 +20,7 @@ actions:
   destroy:
     command: vagrant destroy
     description: Destroy the VM
-  reprovision:
-    command: vagrant provision
-    description: Reprovisions the Vagrant VM, may result in errors due to prior provisioning.
+  restart:
+    command: vagrant reload
+    description: Reloads the Vagrant VM so that config changes can take effect.
     alias: reup

@@ -8,6 +8,7 @@ Run `docker` on macOS for local development. This project was inspired by this[^
   - [Additions `ops` commands](#additions-ops-commands)
   - [Multiple Dockstations](#multiple-dockstations)
 - [Configuration](#configuration)
+  - [Port Forwarding](#port-forwarding)
 - [Get started manually](#get-started-manually)
   - [Dependencies](#dependencies)
   - [Deploy](#deploy)
@@ -24,7 +25,7 @@ You need [Homebrew](https://brew.sh).
 
 If you have [`ops`](https://github.com/nickthecook/ops) [^2] then all you have to do is the following after you clone this repo.
 
-```
+```sh
 ops up
 source tmp/local-setup.sh
 ```
@@ -52,13 +53,35 @@ And you're ready to go with the defaults.  Run `docker ps` to verify.
 
 The following environment variables can be used before deploying the VM to change the default configuration:
 
-| Variable           | Default Value      | Description                                       |
-| ------------------ | ------------------ | ------------------------------------------------- |
-| `OPT_DOCKER_PORT`  | `2375`             | The guest docker port and the forwarded host port |
-| `OPT_VM_IP`        | `192.168.56.81`    | The VM's host-accessible IP address               |
-| `OPT_VM_MEM_MB`    | `2048`             | The amount of memory allocated to the VM          |
-| `OPT_VM_HOSTNAME`  | `dockstation`      | The VM's host name                                |
-| `OPT_VM_LOCALNAME` | `$OPT_VM_HOSTNAME` | The VM's local name that vagrant lists.           |
+| Variable              | Default Value      | Description                                       |
+| --------------------- | ------------------ | ------------------------------------------------- |
+| `OPT_DOCKER_PORT`     | `2375`             | The guest docker port and the forwarded host port |
+| `OPT_VM_IP`           | `192.168.56.81`    | The VM's host-accessible IP address               |
+| `OPT_VM_MEM_MB`       | `2048`             | The amount of memory allocated to the VM          |
+| `OPT_VM_HOSTNAME`     | `dockstation`      | The VM's host name                                |
+| `OPT_VM_LOCALNAME`    | `$OPT_VM_HOSTNAME` | The VM's local name that vagrant lists.           |
+| `OPT_VM_PORT_FORWARD` | `[]`               | See port forwarding section below for details.    |
+
+### Port Forwarding
+
+To reach a container's application port from your host via `localhost`, you need to specify which "host" ports to forward to which "vm" ports. You can do this via the `OPT_VM_PORT_FORWARD` env variable.
+
+The variable takes a string with a JSON array of records. Here's an example:
+
+```sh
+OPT_VM_PORT_FORWARD=[{"host":5432,"vm":5432,"name":"postgres"},{"both":6379,name:"redis"}]
+```
+
+Each rule record has to be defined as follows:
+
+| Property | Type of value | Description                                                           |
+| -------- | ------------- | --------------------------------------------------------------------- |
+| `host`   | Number        | The port number on the host running the VM                            |
+| `vm`     | Number        | The port number on the VM (otherwise known as "guest")                |
+| `both`   | Number        | If both host and vm ports are the same, use this to specify one value |
+| `name`   | String        | A name of the service/app.                                            |
+
+> If you're using `ops` then you can specify this in your `config/$environment/config.json` file as a JSON value and the encoding will just happen.
 
 ## Get started manually
 

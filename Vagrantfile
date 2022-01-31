@@ -1,11 +1,14 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+require 'json'
+
 options = {
   docker_port: ENV['OPT_DOCKER_PORT'] ? ENV['OPT_DOCKER_PORT'].to_i : 2375,
   vm_hostname: ENV['OPT_VM_HOSTNAME'] || 'dockstation',
   vm_ip_addr: ENV['OPT_VM_IP'] || '192.168.56.81',
-  vm_mem_mb: ENV['OPT_VM_MEM_MB'] ? ENV['OPT_VM_MEM_MB'].to_i : 2048
+  vm_mem_mb: ENV['OPT_VM_MEM_MB'] ? ENV['OPT_VM_MEM_MB'].to_i : 2048,
+  vm_port_fwd: JSON.parse(ENV['OPT_VM_PORT_FORWARD'] || '[]')
 }
 options[:vm_local_name] = ENV['OPT_VM_LOCALNAME'] || options[:vm_hostname]
 
@@ -42,6 +45,11 @@ Vagrant.configure('2') do |config|
                     guest: options[:docker_port],
                     host: options[:docker_port],
                     id: 'dockerd'
+  # Forward configured ports
+  options[:vm_port_fwd].each do |fwd|
+    fwd['host'] = fwd['vm'] = fwd['both'] if fwd.has_key?('both')
+    config.vm.network 'forwarded_port', guest: fwd['vm'], host: fwd['host'], id: fwd['name']
+  end
 
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine and only allow access
