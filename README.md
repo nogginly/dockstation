@@ -36,12 +36,12 @@ And you're ready to go with the defaults.  Run `docker ps` to verify.
 
 ### Additions `ops` commands
 
-| Command           | Description                                                                                                   |
-| ----------------- | ------------------------------------------------------------------------------------------------------------- |
-| `ops start`       | Start/resume the Dockstation VM                                                                               |
-| `ops stop`        | Suspend the VM by saving it's state before shutting the VM down.                                              |
-| `ops destroy`     | Destroy the Dockstation, deletes all the containers and images within. You can always `ops start`  a new one. |
-| `ops reprovision` | If you want to change the port, you can use this to reconfigure the Dockstation.                              |
+| Command       | Description                                                                                                   |
+| ------------- | ------------------------------------------------------------------------------------------------------------- |
+| `ops start`   | Start/resume the Dockstation VM                                                                               |
+| `ops stop`    | Suspend the VM by saving it's state before shutting the VM down.                                              |
+| `ops destroy` | Destroy the Dockstation, deletes all the containers and images within. You can always `ops start`  a new one. |
+| `ops restart` | Use this to restart the VM with updates to port forwarding configuration.                                     |
 
 ### Multiple Dockstations
 
